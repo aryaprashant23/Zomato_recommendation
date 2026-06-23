@@ -8,8 +8,6 @@ import sys
 
 from app.api.routes import router
 from app.config import settings
-from app.data.loader import DatasetLoader
-from app.data.preprocessor import DataPreprocessor
 from app.data.repository import RestaurantRepository
 from app.services.groq_client import GroqRecommendationEngine
 from app.services.recommendation import RecommendationService
@@ -18,11 +16,21 @@ from app.services.recommendation import RecommendationService
 async def lifespan(app: FastAPI):
     # Startup: Load dataset and initialize services
     try:
-        print("Loading dataset for API...")
-        loader = DatasetLoader(settings.DATASET_CACHE_PATH)
-        df = loader.load_raw_dataset()
-        preprocessor = DataPreprocessor()
-        restaurants = preprocessor.preprocess(df)
+        print("Loading preprocessed dataset for API...")
+        import json
+        from pathlib import Path
+        
+        data_path = Path("data/restaurants_processed.json")
+        if data_path.exists():
+            with open(data_path, "r", encoding="utf-8") as f:
+                restaurants_data = json.load(f)
+            from app.models.restaurant import Restaurant
+            restaurants = [Restaurant(**r) for r in restaurants_data]
+            print(f"Loaded {len(restaurants)} preprocessed restaurants.")
+        else:
+            print("Preprocessed dataset not found! Please run scripts/build_dataset.py first.")
+            sys.exit(1)
+
         repository = RestaurantRepository(restaurants)
         
         engine = GroqRecommendationEngine()
