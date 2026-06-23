@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>LUXE BITE | AI Restaurant Recommender</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&amp;family=Inter:wght@300;400;500;600&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --crimson: #be0037;
+        }
+        body {
+            background-color: #0b1326;
+            color: #dae2fd;
+            font-family: 'Inter', sans-serif;
+            overflow-x: hidden;
+        }
+        .font-headline { font-family: 'Outfit', sans-serif; }
+        .glass-panel {
+            background: var(--glass-bg);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 1px solid var(--glass-border);
+        }
+        .glass-card-hover:hover {
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+        }
+        .shimmer {
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.05), transparent);
+            background-size: 200% 100%;
+            animation: shimmer 3s infinite;
+        }
+        @keyframes shimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+        input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 16px;
+            width: 16px;
+            border-radius: 50%;
+            background: #ffb3b6;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(225, 29, 72, 0.5);
+        }
+        .text-glow-crimson {
+            text-shadow: 0 0 8px rgba(225, 29, 72, 0.6);
+        }
+    </style>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-primary-fixed-variant": "#920028",
+                        "surface": "#0b1326",
+                        "on-secondary-fixed": "#2a1700",
+                        "on-secondary": "#472a00",
+                        "secondary-fixed-dim": "#ffb95f",
+                        "error": "#ffb4ab",
+                        "on-error": "#690005",
+                        "surface-dim": "#0b1326",
+                        "inverse-surface": "#dae2fd",
+                        "tertiary-container": "#007ca8",
+                        "outline": "#ac8889",
+                        "on-tertiary-container": "#f8fbff",
+                        "primary": "#ffb3b6",
+                        "surface-container-high": "#222a3d",
+                        "secondary-fixed": "#ffddb8",
+                        "background": "#0b1326",
+                        "on-primary": "#68001a",
+                        "surface-bright": "#31394d",
+                        "secondary": "#ffb95f",
+                        "primary-fixed-dim": "#ffb3b6",
+                        "on-primary-container": "#fffaf9",
+                        "on-secondary-container": "#5b3800",
+                        "tertiary": "#7bd0ff",
+                        "on-tertiary": "#00354a",
+                        "on-primary-fixed": "#40000c",
+                        "on-tertiary-fixed": "#001e2c",
+                        "on-background": "#dae2fd",
+                        "secondary-container": "#ee9800",
+                        "error-container": "#93000a",
+                        "on-tertiary-fixed-variant": "#004c69",
+                        "surface-container-highest": "#2d3449",
+                        "inverse-primary": "#be0037",
+                        "surface-container": "#171f33",
+                        "surface-variant": "#2d3449",
+                        "surface-tint": "#ffb3b6",
+                        "on-error-container": "#ffdad6",
+                        "tertiary-fixed": "#c4e7ff",
+                        "on-surface-variant": "#e5bdbe",
+                        "primary-fixed": "#ffdada",
+                        "on-surface": "#dae2fd",
+                        "tertiary-fixed-dim": "#7bd0ff",
+                        "primary-container": "#e11d48",
+                        "surface-container-lowest": "#060e20",
+                        "on-secondary-fixed-variant": "#653e00",
+                        "outline-variant": "#5c3f40",
+                        "surface-container-low": "#131b2e",
+                        "inverse-on-surface": "#283044"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "container-max": "1440px",
+                        "stack-lg": "32px",
+                        "stack-sm": "8px",
+                        "stack-md": "16px",
+                        "gutter": "24px",
+                        "margin-mobile": "16px",
+                        "sidebar-width": "320px"
+                    },
+                    "fontFamily": {
+                        "headline-lg": ["Outfit"],
+                        "body-md": ["Inter"],
+                        "title-md": ["Outfit"],
+                        "label-sm": ["Inter"],
+                        "body-lg": ["Inter"],
+                        "display-lg": ["Outfit"]
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-background min-h-screen text-on-surface">
+<!-- Top Navigation Bar -->
+<header class="sticky top-0 z-50 w-full flex justify-between items-center px-gutter py-4 bg-surface/80 backdrop-blur-xl border-b border-white/10 shadow-sm">
+<div class="flex items-center gap-4">
+<span class="font-headline-lg text-headline-lg font-bold tracking-tight text-primary">LUXE BITE</span>
+</div>
+<div class="hidden md:flex gap-8 items-center">
+<a class="text-primary font-bold border-b-2 border-primary pb-1 font-body-md text-body-md" href="#">Dashboard</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Discover</a>
+<a class="text-on-surface-variant font-medium hover:text-primary transition-colors duration-300 font-body-md text-body-md" href="#">Reservations</a>
+</div>
+<div class="flex items-center gap-4">
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="search">search</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="account_circle">account_circle</span>
+<span class="material-symbols-outlined text-on-surface-variant hover:text-primary cursor-pointer transition-colors" data-icon="settings">settings</span>
+</div>
+</header>
+<div class="flex flex-col md:flex-row min-h-[calc(100vh-72px)]">
+<!-- Left Sidebar: Preference Form -->
+<aside class="w-full md:w-[320px] md:sticky md:top-[72px] md:h-[calc(100vh-72px)] glass-panel border-r border-white/10 p-6 flex flex-col gap-6 overflow-y-auto">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary" data-icon="restaurant_menu">restaurant_menu</span>
+<h2 class="font-title-md text-title-md text-primary font-bold">Refine Your Taste</h2>
+</div>
+<form class="flex flex-col gap-5">
+<!-- Location -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">LOCATION</label>
+<select id="location" class="w-full bg-white border border-gray-300 rounded-lg p-3 text-black focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all">
+<option value="bangalore">Bangalore</option>
+<option value="delhi">Delhi</option>
+<option value="mumbai">Mumbai</option>
+</select>
+</div>
+<!-- Budget -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">BUDGET</label>
+<div id="budget-group" class="grid grid-cols-3 gap-1 p-1 bg-white/5 border border-white/10 rounded-xl">
+<button data-budget="low" class="py-2 text-xs font-bold rounded-lg text-on-surface hover:bg-white/5 transition-all budget-btn" type="button">LOW</button>
+<button data-budget="medium" class="py-2 text-xs font-bold rounded-lg bg-primary-container text-white shadow-lg budget-btn" type="button">MED</button>
+<button data-budget="high" class="py-2 text-xs font-bold rounded-lg text-on-surface hover:bg-white/5 transition-all budget-btn" type="button">HIGH</button>
+</div>
+</div>
+<!-- Cuisine -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">CUISINE</label>
+<select id="cuisine" class="w-full bg-white border border-gray-300 rounded-lg p-3 text-black focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all">
+<option value="">Any Cuisine</option>
+</select>
+</div>
+<!-- Rating -->
+<div class="flex flex-col gap-2">
+<div class="flex justify-between items-center">
+<label class="font-label-sm text-label-sm text-on-surface-variant">MIN RATING</label>
+<span id="rating-val" class="text-primary font-bold text-sm">4.0+</span>
+</div>
+<input id="rating" class="w-full h-1 bg-white/10 rounded-lg appearance-none cursor-pointer accent-primary" max="5" min="0" step="0.1" type="range" value="4"/>
+</div>
+<!-- Preferences -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">ADDITIONAL PREFERENCES</label>
+<textarea id="additional" class="bg-white/5 border border-white/10 rounded-lg p-3 text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all resize-none" placeholder="e.g. rooftop, romantic, live music" rows="2"></textarea>
+</div>
+<!-- Top K -->
+<div class="flex flex-col gap-2">
+<label class="font-label-sm text-label-sm text-on-surface-variant">RESULTS LIMIT</label>
+<input id="top_k" class="bg-white/5 border border-white/10 rounded-lg p-3 text-on-surface focus:border-primary-container focus:ring-1 focus:ring-primary-container outline-none transition-all" type="number" value="5"/>
+</div>
+<button id="submit-btn" type="button" class="w-full mt-4 bg-primary-container text-white font-headline text-lg font-bold py-4 rounded-xl shadow-[0_0_20px_rgba(225,29,72,0.4)] hover:shadow-[0_0_30px_rgba(225,29,72,0.6)] active:scale-95 transition-all duration-300">
+                    Find My Perfect Spot
+                </button>
+</form>
+</aside>
+<!-- Main Content Area -->
+<main class="flex-1 p-6 md:p-12 max-w-container-max mx-auto w-full">
+<!-- Hero Header -->
+<div class="mb-12 relative">
+
+<h1 class="font-display-lg text-display-lg text-on-surface tracking-tight leading-tight mb-4">
+                    Your AI <span class="text-primary text-glow-crimson">Concierge</span>
+</h1>
+<p class="font-body-lg text-body-lg text-on-surface-variant max-w-2xl">
+                    Hand-picked culinary experiences tailored to your mood, using deep-learning analysis of thousands of real-time reviews and local insights.
+                </p>
+</div>
+<!-- AI Summary Box -->
+<div id="summary-box" class="hidden glass-panel p-6 rounded-2xl mb-12 flex items-start gap-4 border-l-4 border-l-primary shadow-2xl relative overflow-hidden">
+<div class="shimmer absolute inset-0 pointer-events-none"></div>
+<div class="bg-primary/20 p-2 rounded-lg">
+<span class="material-symbols-outlined text-primary" data-icon="auto_awesome">auto_awesome</span>
+</div>
+<div>
+<p id="summary-text" class="font-body-md text-body-md text-on-surface leading-relaxed">
+                        Based on your profile, I've curated the <span class="text-primary font-bold">top 3 Italian spots in Bangalore</span> that perfectly fit your medium budget and family-friendly preference.
+                    </p>
+</div>
+</div>
+<!-- Results Grid -->
+<div id="results-grid" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+</div>
+<!-- Dashboard Footer/Stats -->
+<div class="mt-16 grid grid-cols-2 md:grid-cols-4 gap-4">
+<div class="glass-panel p-4 rounded-xl text-center">
+<p class="text-on-surface-variant text-xs font-bold uppercase mb-1">Total Scanned</p>
+<p class="text-2xl font-headline font-bold text-primary">1,240+</p>
+</div>
+<div class="glass-panel p-4 rounded-xl text-center">
+<p class="text-on-surface-variant text-xs font-bold uppercase mb-1">Your Visits</p>
+<p class="text-2xl font-headline font-bold text-tertiary">28</p>
+</div>
+<div class="glass-panel p-4 rounded-xl text-center">
+<p class="text-on-surface-variant text-xs font-bold uppercase mb-1">AI Accuracy</p>
+<p class="text-2xl font-headline font-bold text-secondary">94%</p>
+</div>
+<div class="glass-panel p-4 rounded-xl text-center">
+<p class="text-on-surface-variant text-xs font-bold uppercase mb-1">Top Pick Today</p>
+<p class="text-2xl font-headline font-bold text-on-surface">Truffles</p>
+</div>
+</div>
+</main>
+</div>
+<!-- Floating Action Button -->
+<button class="fixed bottom-8 right-8 w-16 h-16 rounded-full bg-primary-container text-white shadow-[0_8px_30px_rgba(225,29,72,0.4)] flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 z-50">
+<span class="material-symbols-outlined text-3xl" data-icon="add_location">add_location</span>
+</button>
+<script>
+        // Micro-interactions for form controls
+        document.querySelectorAll('input[type="range"]').forEach(range => {
+            range.addEventListener('input', (e) => {
+                const val = parseFloat(e.target.value).toFixed(1);
+                e.target.previousElementSibling.querySelector('span').textContent = val + '+';
+            });
+        });
+
+        // Hover effect for background parallax or subtle lighting
+        document.addEventListener('mousemove', (e) => {
+            const x = e.clientX / window.innerWidth;
+            const y = e.clientY / window.innerHeight;
+            // You could apply this to a background element for a "moving light" effect
+        });
+    </script>
+    <script src="/app.js"></script>
+</body></html>
