@@ -62,7 +62,7 @@ app.include_router(router, prefix="/api")
 
 @app.get("/")
 def serve_frontend():
-    return FileResponse("frontend/code.html")
+    return FileResponse("frontend/index.html")
 
 # Mount frontend directory to serve the rest of the static assets
 app.mount("/", StaticFiles(directory="frontend", html=True), name="frontend")
