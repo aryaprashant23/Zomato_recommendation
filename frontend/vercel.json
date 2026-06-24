@@ -2,7 +2,7 @@
   "rewrites": [
     {
       "source": "/api/:match*",
-      "destination": "https://<YOUR_RAILWAY_URL>/api/:match*"
+      "destination": "https://zomatorecommendation-production.up.railway.app/api/:match*"
     }
   ]
 }
